@@ -66,7 +66,7 @@ public class PlayerTest {
         player.tipeClass(99); // Invalid choice
         assertNull(player.getPlayerClass(), "Player class should be null for invalid input.");
         // Check if stats remained unchanged (or default)
-        assertEquals(30, player.getBaseHP(), "HP should remain base (50) for invalid class choice.");
+        assertEquals(50, player.getBaseHP(), "HP should remain base (50) for invalid class choice.");
         assertEquals(30, player.getBasedef(), "Defense should remain base (30) for invalid class choice.");
         assertEquals(30, player.getBaseatk(), "Attack should remain base (30) for invalid class choice.");
     }
