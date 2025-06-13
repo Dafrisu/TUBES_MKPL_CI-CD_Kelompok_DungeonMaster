@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class testPlayer {
 
+
     private Player player;
     private Model.Equipment testEquipment;
 
