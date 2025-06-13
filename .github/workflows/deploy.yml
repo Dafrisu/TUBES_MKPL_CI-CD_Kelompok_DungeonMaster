@@ -25,10 +25,42 @@ jobs:
       - name: Download and Extract Launch4j
         run: |
           curl -L -o launch4j.zip https://sourceforge.net/projects/launch4j/files/launch4j-3/3.50/launch4j-3.50-win32.zip/download
-          tar -xf launch4j.zip
-
+          Expand-Archive -Path launch4j.zip -DestinationPath . -Force
+          
       - name: Create EXE using Launch4j
-        run: .\launch4j-3.50\launch4j.exe launch4j-config.xml
+        run: |
+          # Try common paths where launch4j.exe might be
+          $possiblePaths = @(
+            ".\launch4j-3.50\launch4j.exe",
+            ".\launch4j\launch4j.exe",
+            ".\launch4j.exe"
+          )
+          
+          $launch4jPath = $null
+          foreach ($path in $possiblePaths) {
+            if (Test-Path $path) {
+              $launch4jPath = $path
+              Write-Host "Found launch4j.exe at: $path"
+              break
+            }
+          }
+          
+          if (-not $launch4jPath) {
+            Write-Host "Searching for launch4j.exe recursively..."
+            $found = Get-ChildItem -Recurse -Filter "launch4j.exe" | Select-Object -First 1
+            if ($found) {
+              $launch4jPath = $found.FullName
+              Write-Host "Found launch4j.exe at: $launch4jPath"
+            }
+          }
+          
+          if ($launch4jPath) {
+            & $launch4jPath launch4j-config.xml
+          } else {
+            Write-Host "ERROR: launch4j.exe not found anywhere!"
+            Get-ChildItem -Recurse -Name | Write-Host
+            exit 1
+          }
 
       - name: Install Inno Setup
         run: choco install innosetup -y
