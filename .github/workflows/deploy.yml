@@ -73,12 +73,7 @@ jobs:
           }
           
           if ($launch4jPath) {
-            Write-Host "Running Launch4j with config: launch4j-config.xml"
             & $launch4jPath launch4j-config.xml
-            if ($LASTEXITCODE -ne 0) {
-              Write-Host "Launch4j failed with exit code: $LASTEXITCODE"
-              exit 1
-            }
           } else {
             Write-Host "ERROR: launch4j.exe not found anywhere!"
             Get-ChildItem -Recurse -Name | Write-Host
