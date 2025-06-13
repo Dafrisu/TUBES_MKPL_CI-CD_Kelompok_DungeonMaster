@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mycompany</groupId>
-    <artifactId>PBO_W6</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>Dungeon_Master</artifactId>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -17,5 +17,6 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <exec.mainClass>com.mycompany.pbo_w6.PBO_W6</exec.mainClass>
+        <revision>0.0.0</revision>
     </properties>
 </project>
