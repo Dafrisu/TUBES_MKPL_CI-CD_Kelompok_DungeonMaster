@@ -1,4 +1,4 @@
-name: Build EXE Installer
+name: Deploy Java Game
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  deploy:
     runs-on: windows-latest
 
     steps:
@@ -19,45 +19,46 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Extract version from tag
+        run: |
+          echo "REVISION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          echo "Version extracted: ${GITHUB_REF#refs/tags/v}"
+
+      - name: Show extracted revision
+        run: echo "Revision is ${{ env.REVISION }}"
+
+      - name: Set version in pom.xml
+        run: mvn versions:set -DnewVersion=${{ env.REVISION }}
+
       - name: Build with Maven
         run: mvn clean package
 
-      - name: List contents of target/
-        run: Get-ChildItem target
-
-      - name: Download and Extract Launch4j
+      - name: Rename JAR file to include extracted version
         run: |
-          curl -L -o launch4j.zip https://sourceforge.net/projects/launch4j/files/launch4j-3/3.50/launch4j-3.50-win32.zip/download
-          Expand-Archive -Path launch4j.zip -DestinationPath . -Force
+          mv target/*.jar target/Dungeon_Master-${{ env.REVISION }}.jar
+        shell: bash
 
-      - name: Create EXE using Launch4j
+      - name: List contents of target folder
+        run: ls -l target
+        shell: bash
+
+      - name: Create game EXE using jpackage
         run: |
-          $launch4jPath = Get-ChildItem -Recurse -Filter "launch4j.exe" | Where-Object { $_.FullName -like "*launch4j*" } | Select-Object -First 1
-          if ($launch4jPath) {
-            Write-Host "Found launch4j.exe at: $($launch4jPath.FullName)"
-            & $launch4jPath.FullName /log launch4j-config.xml
-          } else {
-            Write-Error "launch4j.exe not found!"
-            exit 1
-          }
+          jpackage \
+            --type exe \
+            --name DungeonMaster \
+            --input target \
+            --main-jar Dungeon_Master-${{ env.REVISION }}.jar \
+            --main-class com.mycompany.pbo_w6.PBO_W6 \
+            --dest output \
+            --win-console
+        shell: bash
 
-      - name: Print Launch4j Log
-        if: always()
-        run: |
-          if (Test-Path launch4j.log) {
-            Get-Content launch4j.log
-          } else {
-            Write-Host "launch4j.log not found"
-          }
-
-      - name: Install Inno Setup
-        run: choco install innosetup -y
-
-      - name: Create installer using Inno Setup
-        run: iscc installer.iss
-
-      - name: Upload installer
-        uses: actions/upload-artifact@v4
+      - name: Upload JAR and EXE to GitHub Releases
+        uses: softprops/action-gh-release@v1
         with:
-          name: DungeonMasterInstaller
-          path: Output/*.exe
+          files: |
+            target/Dungeon_Master-${{ env.REVISION }}.jar
+            output/DungeonMaster.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
