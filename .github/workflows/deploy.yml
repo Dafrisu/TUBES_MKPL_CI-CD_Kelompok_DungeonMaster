@@ -20,11 +20,12 @@ jobs:
           distribution: 'temurin'
 
       - name: Extract version from tag
-        shell: pwsh
         run: |
-          $version = $env:GITHUB_REF -replace '^refs/tags/v', ''
-          "REVISION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
-          Write-Output "Version extracted: $version"
+          echo "REVISION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          echo "Version extracted: ${GITHUB_REF#refs/tags/v}"
+
+      - name: Show extracted revision
+        run: echo "Revision is ${{ env.REVISION }}"
 
       - name: Set version in pom.xml
         shell: pwsh
