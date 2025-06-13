@@ -47,4 +47,8 @@
      <url>https://maven.pkg.github.com/Dafrisu/TUBES_MKPL_CI-CD_Kelompok_DungeonMaster</url>
    </repository>
 </distributionManagement>
+
+<build>
+  <finalName>DungeonMaster</finalName>
+</build>
 </project>
