@@ -1,0 +1,64 @@
+name: Deploy Java Game
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Extract version from tag
+        run: |
+          echo "REVISION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          echo "Version extracted: ${GITHUB_REF#refs/tags/v}"
+
+      - name: Show extracted revision
+        run: echo "Revision is ${{ env.REVISION }}"
+
+      - name: Set version in pom.xml
+        run: mvn versions:set -DnewVersion=${{ env.REVISION }}
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Rename JAR file to include extracted version
+        run: |
+          mv target/*.jar target/Dungeon_Master-${{ env.REVISION }}.jar
+        shell: bash
+
+      - name: List contents of target folder
+        run: ls -l target
+        shell: bash
+
+      - name: Create game EXE using jpackage
+        run: |
+          jpackage \
+            --type exe \
+            --name DungeonMaster \
+            --input target \
+            --main-jar Dungeon_Master-${{ env.REVISION }}.jar \
+            --main-class com.mycompany.pbo_w6.PBO_W6 \
+            --dest output \
+            --win-console
+        shell: bash
+
+      - name: Upload JAR and EXE to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            target/Dungeon_Master-${{ env.REVISION }}.jar
+            output/DungeonMaster-${{ env.REVISION }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
