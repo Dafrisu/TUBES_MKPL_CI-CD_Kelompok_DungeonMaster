@@ -19,17 +19,21 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Set version from tag
+      - name: Extract version from tag
         run: |
-          $version = "${{ github.ref }}" -replace '^refs/tags/v', ''
-          echo "Using version: $version"
-          echo "revision=$version" >> $env:GITHUB_ENV
-        shell: pwsh
+          echo "REVISION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          echo "Version extracted: ${GITHUB_REF#refs/tags/v}"
+
+      - name: Show extracted revision
+        run: echo "Revision is ${{ env.REVISION }}"
+
+      - name: Set version in pom.xml
+        run: mvn versions:set -DnewVersion=${{ env.REVISION }}
 
       - name: Build with Maven
-        run: mvn -B clean package -Drevision=$env:revision
+        run: mvn -B clean package -Drevision=${{ env.REVISION }}
 
       - name: Publish to GitHub Packages
-        run: mvn deploy -Drevision=$env:revision
+        run: mvn deploy -Drevision=${{ env.REVISION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
