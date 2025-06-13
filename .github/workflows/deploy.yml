@@ -22,86 +22,41 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
-      - name: Debug - Check Maven output
-        run: |
-          Write-Host "Contents of target directory:"
-          if (Test-Path "target") {
-            Get-ChildItem target -Filter "*.jar" | ForEach-Object {
-              Write-Host "Found JAR: $($_.Name) ($(($_.Length / 1MB).ToString('F2')) MB)"
-            }
-          } else {
-            Write-Host "Target directory not found!"
-          }
-          
-          Write-Host "Launch4j config file:"
-          if (Test-Path "launch4j-config.xml") {
-            Get-Content "launch4j-config.xml"
-          } else {
-            Write-Host "launch4j-config.xml not found!"
-          }
+      - name: List contents of target/
+        run: Get-ChildItem target
 
       - name: Download and Extract Launch4j
         run: |
           curl -L -o launch4j.zip https://sourceforge.net/projects/launch4j/files/launch4j-3/3.50/launch4j-3.50-win32.zip/download
           Expand-Archive -Path launch4j.zip -DestinationPath . -Force
-          
+
       - name: Create EXE using Launch4j
         run: |
-          # Try common paths where launch4j.exe might be
-          $possiblePaths = @(
-            ".\launch4j-3.50\launch4j.exe",
-            ".\launch4j\launch4j.exe",
-            ".\launch4j.exe"
-          )
-          
-          $launch4jPath = $null
-          foreach ($path in $possiblePaths) {
-            if (Test-Path $path) {
-              $launch4jPath = $path
-              Write-Host "Found launch4j.exe at: $path"
-              break
-            }
-          }
-          
-          if (-not $launch4jPath) {
-            Write-Host "Searching for launch4j.exe recursively..."
-            $found = Get-ChildItem -Recurse -Filter "launch4j.exe" | Select-Object -First 1
-            if ($found) {
-              $launch4jPath = $found.FullName
-              Write-Host "Found launch4j.exe at: $launch4jPath"
-            }
-          }
-          
+          $launch4jPath = Get-ChildItem -Recurse -Filter "launch4j.exe" | Where-Object { $_.FullName -like "*launch4j*" } | Select-Object -First 1
           if ($launch4jPath) {
-            & $launch4jPath launch4j-config.xml
+            Write-Host "Found launch4j.exe at: $($launch4jPath.FullName)"
+            & $launch4jPath.FullName /log launch4j-config.xml
           } else {
-            Write-Host "ERROR: launch4j.exe not found anywhere!"
-            Get-ChildItem -Recurse -Name | Write-Host
+            Write-Error "launch4j.exe not found!"
             exit 1
           }
 
-      - name: Verify EXE creation
+      - name: Print Launch4j Log
+        if: always()
         run: |
-          Write-Host "Checking for created EXE files..."
-          Get-ChildItem -Filter "*.exe" -Recurse | ForEach-Object {
-            Write-Host "Found EXE: $($_.FullName)"
-          }
-          
-          # Check if the expected DungeonMaster.exe exists
-          if (-not (Test-Path "DungeonMaster.exe")) {
-            Write-Host "ERROR: DungeonMaster.exe was not created!"
-            Write-Host "Contents of current directory:"
-            Get-ChildItem | Format-Table Name, Length, LastWriteTime
-            Write-Host "Launch4j config file contents:"
-            if (Test-Path "launch4j-config.xml") {
-              Get-Content "launch4j-config.xml"
-            } else {
-              Write-Host "launch4j-config.xml not found!"
-            }
-            exit 1
+          if (Test-Path launch4j.log) {
+            Get-Content launch4j.log
           } else {
-            Write-Host "SUCCESS: DungeonMaster.exe found!"
-            Get-Item "DungeonMaster.exe" | Format-List Name, Length, LastWriteTime
+            Write-Host "launch4j.log not found"
+          }
+
+      - name: Check if DungeonMaster.exe was created
+        run: |
+          if (Test-Path "DungeonMaster.exe") {
+            Write-Host "DungeonMaster.exe created successfully"
+          } else {
+            Write-Error "DungeonMaster.exe was not created!"
+            exit 1
           }
 
       - name: Install Inno Setup
