@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mycompany</groupId>
     <artifactId>Dungeon_Master</artifactId>
-    <version>${revision}</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -35,7 +35,6 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <exec.mainClass>com.mycompany.pbo_w6.PBO_W6</exec.mainClass>
-        <revision>0.0.0</revision>
         <sonar.organization>dungeonmaster</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
