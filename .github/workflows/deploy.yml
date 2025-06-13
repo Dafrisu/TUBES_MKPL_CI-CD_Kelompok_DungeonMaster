@@ -36,7 +36,7 @@ jobs:
       - name: Rename JAR file to include extracted version
         run: |
           mv target/*.jar target/Dungeon_Master-${{ env.REVISION }}.jar
-          shell: bash
+        shell: bash
 
       - name: List contents of target folder
         run: ls -l target
