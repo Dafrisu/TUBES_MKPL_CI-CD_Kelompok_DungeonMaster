@@ -22,7 +22,8 @@ jobs:
       - name: Extract version from tag
         run: |
           for /f "tokens=3 delims=/" %%A in ("%GITHUB_REF%") do echo REVISION=%%A>> %GITHUB_ENV%
-
+        shell: cmd
+        
       - name: Set version in pom.xml
         run: mvn versions:set -DnewVersion=${{ env.REVISION }}
 
