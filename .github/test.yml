@@ -1,0 +1,30 @@
+name: CI Tests
+
+on:
+  pull_request:
+    branches:
+      - master # Jalankan ketika ada PR ke branch 'main'
+  push:
+    branches:
+      - master # Jalankan ketika ada push/merge langsung ke branch 'main'
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest # Atau Windows/macOS jika project Anda membutuhkannya
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4 # Mengambil kode dari repository
+
+    - name: Set up JDK 17 # Pastikan versi JDK sesuai dengan project Anda (misal: 17 atau 21)
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17' # Ubah ke '21' jika Anda sudah update pom.xml ke Java 21
+        distribution: 'temurin' # Atau 'adopt', 'oracle', dll.
+        cache: 'maven' # Menggunakan cache Maven untuk mempercepat build
+
+    - name: Build with Maven # Membersihkan dan menginstal dependensi Maven
+      run: mvn clean install -DskipTests # Skip test dulu saat build untuk mempercepat
+
+    - name: Run Unit Tests # Menjalankan semua test yang ada di folder 'test'
+      run: mvn test
