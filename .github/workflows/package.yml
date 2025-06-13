@@ -22,6 +22,17 @@ jobs:
         server-id: github
         settings-path: ${{ github.workspace }}
 
+    - name: Extract version from tag
+      run: |
+        echo "REVISION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+        echo "Version extracted: ${GITHUB_REF#refs/tags/v}"
+
+    - name: Show extracted revision
+      run: echo "Revision is ${{ env.REVISION }}"
+
+    - name: Set version in pom.xml
+      run: mvn versions:set -DnewVersion=${{ env.REVISION }}
+
     - name: Build project
       run: mvn clean verify
 
