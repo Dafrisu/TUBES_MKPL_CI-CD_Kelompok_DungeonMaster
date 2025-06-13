@@ -25,11 +25,10 @@ jobs:
       - name: Download and Extract Launch4j
         run: |
           curl -L -o launch4j.zip https://sourceforge.net/projects/launch4j/files/launch4j-3/3.50/launch4j-3.50-win32.zip/download
-          mkdir launch4j
-          tar -xf launch4j.zip -C launch4j
+          tar -xf launch4j.zip
 
       - name: Create EXE using Launch4j
-        run: .\launch4j\launch4j.exe launch4j-config.xml
+        run: .\launch4j-3.50\launch4j.exe launch4j-config.xml
 
       - name: Install Inno Setup
         run: choco install innosetup -y
