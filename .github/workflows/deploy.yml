@@ -20,9 +20,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Extract version from tag
+        shell: cmd
         run: |
-          $version = $env:GITHUB_REF -replace '^refs/tags/v', ''
-          "REVISION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
+          for /f "tokens=3 delims=/" %%A in ("%GITHUB_REF%") do echo REVISION=%%A>> %GITHUB_ENV%
         
         
       - name: Set version in pom.xml
