@@ -43,6 +43,7 @@ jobs:
             --main-class com.mycompany.pbo_w6.PBO_W6 \
             --dest output \
             --win-console
+        shell: bash
 
       - name: Upload JAR and EXE to GitHub Releases
         uses: softprops/action-gh-release@v1
