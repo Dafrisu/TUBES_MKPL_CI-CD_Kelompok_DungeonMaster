@@ -20,11 +20,12 @@ jobs:
           distribution: 'temurin'
 
       - name: Extract version from tag
-        shell: cmd
+        shell: pwsh
         run: |
-          for /f "tokens=3 delims=/" %%A in ("%GITHUB_REF%") do echo REVISION=%%A>> %GITHUB_ENV%
-        
-        
+          $version = $env:GITHUB_REF -replace '^refs/tags/v', ''
+          "REVISION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "Version extracted: $version"
+
       - name: Set version in pom.xml
         run: mvn versions:set -DnewVersion=${{ env.REVISION }}
 
@@ -34,20 +35,20 @@ jobs:
       - name: Create game EXE using jpackage
         run: |
           jpackage ^
-          --type exe ^
-          --name DungeonMaster ^
-          --input target ^
-          --main-jar Dungeon_Master-${{ env.REVISION }}.jar ^
-          --main-class com.mycompany.pbo_w6.PBO_W6 ^
-          --dest output ^
-          --win-console
+            --type exe ^
+            --name DungeonMaster ^
+            --input target ^
+            --main-jar Dungeon_Master-${{ env.REVISION }}.jar ^
+            --main-class com.mycompany.pbo_w6.PBO_W6 ^
+            --dest output ^
+            --win-console
         shell: cmd
 
       - name: Upload JAR and EXE to GitHub Releases
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            target\Dungeon_Master-${{ env.REVISION }}.jar
-            output\DungeonMaster.exe
+            target/Dungeon_Master-${{ env.REVISION }}.jar
+            output/DungeonMaster.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
