@@ -33,6 +33,15 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
+      - name: Rename JAR file to include extracted version
+        run: |
+          mv target/*.jar target/Dungeon_Master-${{ env.REVISION }}.jar
+          shell: bash
+
+      - name: List contents of target folder
+        run: ls -l target
+        shell: bash
+
       - name: Create game EXE using jpackage
         run: |
           jpackage \
