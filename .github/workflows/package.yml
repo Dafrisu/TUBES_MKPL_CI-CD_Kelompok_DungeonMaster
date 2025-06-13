@@ -31,9 +31,9 @@ jobs:
         run: mvn versions:set -DnewVersion=${{ env.REVISION }}
 
       - name: Build with Maven
-        run: mvn -B clean package -Drevision=${{ env.REVISION }}
+        run: mvn -B -e -X clean package -Drevision=${{ env.REVISION }}
 
       - name: Publish to GitHub Packages
-        run: mvn deploy -Drevision=${{ env.REVISION }}
+        run: mvn -e -X deploy -Drevision=${{ env.REVISION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
