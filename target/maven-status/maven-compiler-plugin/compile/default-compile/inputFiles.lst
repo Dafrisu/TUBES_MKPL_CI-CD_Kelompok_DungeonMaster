@@ -1,15 +1,15 @@
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\com\mycompany\pbo_w6\PBO_W6.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Controller\Controller.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Database\JDBC.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Model\Actions.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Model\Class.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Model\Enemy.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Model\Entity.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Model\Equipment.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Model\Model.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Model\NPC.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Model\Player.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\Model\Stage.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\VIew\GUI.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\VIew\Main_Menu.java
-E:\Backupan Document\Semester 6\MAKEPEL\TUBES\TUBES_PBO_GAME\src\main\java\VIew\ScoreBoard.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\VIew\Main_Menu.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Model\Player.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Controller\Controller.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Model\Actions.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Model\Model.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Model\Class.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Model\Equipment.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\VIew\ScoreBoard.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Model\Stage.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\com\mycompany\pbo_w6\PBO_W6.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Model\NPC.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Model\Entity.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Model\Enemy.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\VIew\GUI.java
+C:\Users\Haikal\Downloads\MKPL_TUBES\TUBES_MKPL_CI-CD_Kelompok_DungeonMaster\src\main\java\Database\JDBC.java
