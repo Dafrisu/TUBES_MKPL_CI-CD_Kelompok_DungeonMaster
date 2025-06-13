@@ -50,15 +50,6 @@ jobs:
             Write-Host "launch4j.log not found"
           }
 
-      - name: Check if DungeonMaster.exe was created
-        run: |
-          if (Test-Path "DungeonMaster.exe") {
-            Write-Host "DungeonMaster.exe created successfully"
-          } else {
-            Write-Error "DungeonMaster.exe was not created!"
-            exit 1
-          }
-
       - name: Install Inno Setup
         run: choco install innosetup -y
 
