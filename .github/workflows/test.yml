@@ -1,0 +1,23 @@
+name: CI Tests
+
+on:
+  pull_request:
+    branches:
+      - master # Jalankan ketika ada PR ke branch 'main'
+  push:
+    branches:
+      - master # Jalankan ketika ada push/merge langsung ke branch 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven and test Player
+      run: mvn -B package --file pom.xml
