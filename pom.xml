@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.Dafrisu</groupId>
     <artifactId>tubes-mkpl-ci-cd-kelompok-dungeonmaster</artifactId>
-    <version>1.0.0</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>TUBES_MKPL_CI-CD_Kelompok_DungeonMaster</name>
     <dependencies>
