@@ -22,7 +22,7 @@ jobs:
       - name: Extract version from tag
         run: |
           $version = $env:GITHUB_REF -replace '^refs/tags/v', ''
-          "REVISION=$version" >> $env:GITHUB_ENV
+          "REVISION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
         
         
       - name: Set version in pom.xml
