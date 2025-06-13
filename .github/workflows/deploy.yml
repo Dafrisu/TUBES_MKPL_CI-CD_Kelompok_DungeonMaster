@@ -28,7 +28,8 @@ jobs:
         run: echo "Revision is ${{ env.REVISION }}"
 
       - name: Set version in pom.xml
-        run: mvn versions:set -DnewVersion=${{ env.REVISION }}
+        shell: pwsh
+        run: mvn versions:set -DnewVersion=$env:REVISION
 
       - name: Build with Maven
         run: mvn clean package
