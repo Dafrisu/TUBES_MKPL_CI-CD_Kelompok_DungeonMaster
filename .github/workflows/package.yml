@@ -1,0 +1,49 @@
+name: Package Java Game
+
+on:
+  push:
+    tags:
+      - 'v*'  # Only on version tags like v1.0.0
+
+jobs:
+  package:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Extract version from tag
+        run: |
+          echo "REVISION=${env:GITHUB_REF}" -replace '^refs/tags/v', '' |
+            Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Assemble package directory
+        run: |
+          mkdir GamePackage
+          copy target\Dungeon_Master-${{ env.REVISION }}.jar GamePackage\Dungeon_Master.jar
+          if exist README.txt copy README.txt GamePackage\
+          if exist LICENSE copy LICENSE GamePackage\
+          if exist start.bat copy start.bat GamePackage\
+
+      - name: Zip package for Windows users
+        run: |
+          powershell Compress-Archive `
+            -Path GamePackage\* `
+            -DestinationPath Dungeon_Master_${{ env.REVISION }}.zip
+
+      - name: Upload ZIP to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Dungeon_Master_${{ env.REVISION }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
