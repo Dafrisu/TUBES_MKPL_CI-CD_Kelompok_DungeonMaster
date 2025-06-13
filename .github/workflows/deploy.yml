@@ -1,4 +1,4 @@
-name: Build Java Game
+name: Build and Package Java Game
 
 on:
   push:
@@ -7,30 +7,41 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest 
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Java
-      uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'temurin'
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
 
-    - name: Extract tag version
-      run: echo "REVISION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - name: Extract tag version
+        run: echo "REVISION=${env:GITHUB_REF}" -replace '^refs/tags/v', '' | Out-File -FilePath $env:GITHUB_ENV -Append
 
-    - name: Set version in pom.xml
-      run: mvn versions:set -DnewVersion=$REVISION
+      - name: Set version in pom.xml
+        run: mvn versions:set -DnewVersion=${{ env.REVISION }}
 
-    - name: Build with Maven
-      run: mvn clean package
+      - name: Build with Maven
+        run: mvn clean package
 
-    - name: Upload JAR to GitHub Releases
-      uses: softprops/action-gh-release@v1
-      with:
-        files: target/Dungeon_Master-${{ env.REVISION }}.jar
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create executable with jpackage
+        run: |
+          jpackage ^
+            --input target ^
+            --name Dungeon_Master ^
+            --main-jar Dungeon_Master-${{ env.REVISION }}.jar ^
+            --type exe ^
+            --dest output ^
+            --win-console ^
+            --app-version ${{ env.REVISION }}
+
+      - name: Upload EXE to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        with:
+          files: output/Dungeon_Master-${{ env.REVISION }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
