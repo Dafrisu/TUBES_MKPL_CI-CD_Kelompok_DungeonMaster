@@ -35,13 +35,13 @@ jobs:
 
       - name: Create game EXE using jpackage
         run: |
-          jpackage ^
-            --type exe ^
-            --name DungeonMaster ^
-            --input target ^
-            --main-jar Dungeon_Master-${{ env.REVISION }}.jar ^
-            --main-class com.mycompany.pbo_w6.PBO_W6 ^
-            --dest output ^
+          jpackage \
+            --type exe \
+            --name DungeonMaster \
+            --input target \
+            --main-jar Dungeon_Master-${{ env.REVISION }}.jar \
+            --main-class com.mycompany.pbo_w6.PBO_W6 \
+            --dest output \
             --win-console
         shell: cmd
 
