@@ -26,7 +26,9 @@ jobs:
         run: choco install launch4j -y
 
       - name: Create EXE using Launch4j
-        run: launch4j launch4j-config.xml
+        run: |
+          $launch4jPath = "${Env:ProgramData}\chocolatey\lib\launch4j\tools\launch4j.exe"
+          & $launch4jPath launch4j-config.xml
 
       - name: Install Inno Setup
         run: choco install innosetup -y
